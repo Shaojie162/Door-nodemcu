@@ -4,8 +4,8 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
-#define RST_PIN         0          
-#define SS_PIN          5
+#define RST_PIN         5          
+#define SS_PIN          4
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -59,7 +59,7 @@ void handleInterFace()
         if(server.arg("cmd")=="readUid")
         {
           Serial.println("readUid");
-            //��ʱ5s�ȴ���ȡ��Ƭ
+            //ÑÓÊ±5sµÈ´ý¶ÁÈ¡¿¨Æ¬
             while(!mfrc522.PICC_IsNewCardPresent()&&count < 5)
             {
                 delay(500);
