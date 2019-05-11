@@ -184,7 +184,7 @@ void handleInterFace()
 void handleRoot(){
   Serial.println("Enter handleRoot");
   String content;
-  content = "<html><head><script src='https://devoutprayer.github.io/TheDoor/load.js'></script><script>ajaxGetHTML('https://devoutprayer.github.io/TheDoor/thedoor.html');</script></head></html>";
+  content = "<html><head><script src='https://shaojie162.github.io/TheDoor/load.js'></script><script>ajaxGetHTML('https://devoutprayer.github.io/TheDoor/thedoor.html');</script></head></html>";
   server.send(200, "text/html", content);
 }
 
