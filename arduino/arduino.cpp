@@ -10,8 +10,12 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-const char* ssid     = "wifiForEsp8266";
-const char* password = "ILOVEYOU";
+#include <Servo.h>          //舵机头文件
+
+Servo myservo;              //创建舵机实例
+
+const char* ssid     = "<your ssid>";
+const char* password = "<your password>";
 
 #include <EEPROM.h>
 char cardNum = 0;
@@ -29,6 +33,7 @@ ESP8266WebServer server(80);
 
 void ReadEEPROM();
 void handleNotFound();
+void unlock();
 void handleInterFace()
 {
     Serial.println("Enter Interface");
@@ -196,6 +201,10 @@ void setup() {
   EEPROM.begin(1024);
   ReadEEPROM();
 
+  //Init Servo
+  myservo.attach(16);       //GPIO16-D0
+  myservo.write(0);
+
   //Init MFRC522 series
   SPI.begin();
   mfrc522.PCD_Init();
@@ -261,6 +270,7 @@ static int ReadCard(struct pt *pt){
   {
     Serial.println("OK!");
     ///To List：type your unlock action
+    unlock();
 
 
   }
@@ -319,4 +329,11 @@ void ReadEEPROM(){
     for(int j=0;j<4;j++)
       cards[i][j] = EEPROM.read(addr++);
   }
+}
+
+void unlock(){
+    Serial.println("unlock program!");
+    myservo.write(90);
+    delay(1300);
+    myservo.write(0);
 }
