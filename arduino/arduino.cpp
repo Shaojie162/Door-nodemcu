@@ -1,10 +1,10 @@
 #define PT_USE_TIMER
 #define PT_USE_SEM
-#include <pt.h>
+#include <pt.h>                     //多线程库
 
 #include <SPI.h>
 #include <MFRC522.h>
-#define RST_PIN         5          
+#define RST_PIN         5          //这两个端口定义来自于nodemcu
 #define SS_PIN          4
 
 #include <ESP8266WiFi.h>
@@ -54,7 +54,7 @@ void handleInterFace()
                     content +=">";
                 }
                 content += "</card>";
-            } 
+            }
         }
         if(server.arg("cmd")=="readUid")
         {
@@ -101,7 +101,7 @@ void handleInterFace()
             }
         }
         {
-            
+
             if(server.arg("cmd")=="deleteUid")
             {
               Serial.println("deleteuID");
@@ -140,7 +140,7 @@ void handleInterFace()
             }
         }
         {
-            
+
             if(server.arg("cmd")=="addUid")
             {
               Serial.println("addUid");
@@ -172,7 +172,7 @@ void handleInterFace()
                     EEPROM.commit();
                     ReadEEPROM();
                     content += "<card><A>1</A></card>";
-                    
+
                 }
             }
         }
@@ -184,7 +184,7 @@ void handleInterFace()
 void handleRoot(){
   Serial.println("Enter handleRoot");
   String content;
-  content = "<html><head><script src='https://shaojie162.github.io/TheDoor/load.js'></script><script>ajaxGetHTML('https://devoutprayer.github.io/TheDoor/thedoor.html');</script></head></html>";
+  content = "<html><head><script src='https://shaojie162.github.io/html/load.js'></script><script>ajaxGetHTML('https://shaojie162.github.io/html/thedoor.html');</script></head></html>";
   server.send(200, "text/html", content);
 }
 
@@ -194,13 +194,13 @@ void setup() {
   while(!Serial);
   //Init EEPROM
   EEPROM.begin(1024);
-  ReadEEPROM(); 
-  
+  ReadEEPROM();
+
   //Init MFRC522 series
   SPI.begin();
   mfrc522.PCD_Init();
   mfrc522.PCD_DumpVersionToSerial();
-  
+
   pinMode(LED_BUILTIN, OUTPUT);
   //Init HttpServer series
   WiFi.begin(ssid, password);
@@ -260,6 +260,9 @@ static int ReadCard(struct pt *pt){
   if(n == 4)
   {
     Serial.println("OK!");
+    ///To List：type your unlock action
+
+
   }
   else
   {
@@ -270,7 +273,7 @@ static int ReadCard(struct pt *pt){
   }
 A:
   PT_SEM_SIGNAL(pt,&sem_mfrc522);
-  PT_YIELD(pt); 
+  PT_YIELD(pt);
   PT_TIMER_DELAY(pt,1000);
   PT_END(pt);
 }
@@ -284,7 +287,7 @@ static int HttpServer(struct pt *pt){
 static int Task1(struct pt *pt){
   PT_BEGIN(pt);
   digitalWrite(LED_BUILTIN, LOW);   // Turn the LED on (Note that LOW is the voltage level
-                                    // but actually the LED is on; this is because 
+                                    // but actually the LED is on; this is because
                                     // it is acive low on the ESP-01)
   PT_TIMER_DELAY(pt,1000);                      // Wait for a second
   digitalWrite(LED_BUILTIN, HIGH);  // Turn the LED off by making the voltage HIGH
